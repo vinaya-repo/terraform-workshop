@@ -7,6 +7,7 @@ pool:
 
 steps:
   - task: TerraformTaskV4@4
+    displayName: "Terraform Init and apply"
     inputs:
       provider: 'azurerm'
       command: 'init'
@@ -15,13 +16,6 @@ steps:
       backendAzureRmStorageAccountName: 'vinayasdstorageacc'
       backendAzureRmContainerName: 'vinayasdcontainer'
       backendAzureRmKey: 'prod.terraform.tfstate'
-  - task: TerraformTaskV4@4
-    inputs:
-      provider: 'azurerm'
-      command: 'plan'
-      environmentServiceNameAzureRM: 'Azure subscription 1(e9271524-7275-4e25-9b3f-f52f6a4e4cac)'
-  - task: TerraformTaskV4@4
-    inputs:
-      provider: 'azurerm'
-      command: 'apply'
-      environmentServiceNameAzureRM: 'Azure subscription 1(e9271524-7275-4e25-9b3f-f52f6a4e4cac)'
+    -script: |
+          terraform init
+          terraform apply -var-file="terraform.tfvars" -auto-approve
